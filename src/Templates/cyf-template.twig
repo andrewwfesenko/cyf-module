@@ -1,0 +1,85 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    {# Display Steps #}
+    {% if fields.steps %}
+        <form class="steps">
+            <h3 class="step-heading">{{ fields.block_title|e('html') }}</h3>
+            {% for step in fields.steps %}
+                <div class="step {% if loop.index != 1 %}closed {% endif %}">
+                    <h4>{{ loop.index }}. {{ step.step_title|e('html') }}</h4>
+                    {% if step.step_subtitle %}
+                        <p class="subtitle">{{ step.step_subtitle|e('html') }}</p>
+                    {% endif %}
+                    <p>{{ step.step_description|e('html') }}</p>
+
+                    {% if step.step_type == 'input' %}
+                        {# Input Step #}
+                        {% if step.step_options %}
+                            {% for option in step.step_options %}
+                                <div class="step-option large">
+                                    <label for="step_{{ loop.parent.loop.index }}_option_{{ loop.index }}">
+                                        <input type="{{ option.input_type|default('text')|e('html_attr') }}"
+                                               id="step_{{ loop.parent.loop.index }}_option_{{ loop.index }}"
+                                               name="step_{{ loop.parent.loop.index }}_option_{{ loop.index }}"
+                                               value="">
+                                        {% if option.option_title %}
+                                            <span>{{ option.option_title|e('html') }}</span>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        {% if step.step_options %}
+                            {% for option in step.step_options %}
+                                <input type="{{ step.step_type|e('html_attr') }}"
+                                       id="step_{{ loop.parent.loop.index }}_option_{{ loop.index }}{% if step.step_type == 'checkbox' %}[] {% endif %}"
+                                       name="step_{{ loop.parent.loop.index }}{% if step.step_type == 'checkbox' %}[] {% endif %}"
+                                       value="{{ option.option_title|e('html_attr') }}">
+                                <div class="step-option {{ step.step_size }}">
+                                    {% if option.option_image %}
+                                        <img class="step-img" src="{{ option.option_image.url|e('html_attr') }}"
+                                             alt="{{ option.option_image.alt|e('html_attr') }}">
+                                    {% endif %}
+                                    <label for="step_{{ loop.parent.loop.index }}_option_{{ loop.index }}{% if step.step_type == 'checkbox' %}[] {% endif %}">
+                                        {{ option.option_title|e('html') }}
+                                        {# Display Option Attributes #}
+                                        {% if option.option_attributes %}
+                                            <ul>
+                                                {% for attribute in option.option_attributes %}
+                                                    <li>
+                                                        <span>{{ attribute.attribute_title|e('html') }}</span>: {{ attribute.attribute_value|e('html') }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    <div class="button-wrapper">
+                        {% if loop.last %}
+                            <button type="submit">
+                                Submit
+                                <span class="arrow">
+                                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.5 0.999999C7.5 0.723857 7.27614 0.5 7 0.499999L2.5 0.5C2.22386 0.5 2 0.723857 2 1C2 1.27614 2.22386 1.5 2.5 1.5L6.5 1.5L6.5 5.5C6.5 5.77614 6.72386 6 7 6C7.27614 6 7.5 5.77614 7.5 5.5L7.5 0.999999ZM1.35355 7.35355L7.35355 1.35355L6.64645 0.646446L0.646447 6.64645L1.35355 7.35355Z" fill="white"></path>
+                                </svg>
+                            </span>
+                            </button>
+                        {% else %}
+                            <button type="button" class="next-button">
+                                Next Step
+                            </button>
+                        {% endif %}
+                        <button type="button" class="edit-button">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </form>
+    {% endif %}
+{% endblock %}

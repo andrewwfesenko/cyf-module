@@ -1,0 +1,17 @@
+{
+    "name": "andrii-fesenko/cyf-module",
+    "require": {
+        "timber/timber": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "CyfModule\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andrii Fesenko",
+            "email": "andrewwfesenko@gmail.com"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+{# Load the theme's header #}
+{{ function('get_header') }}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+{# Load the theme's footer #}
+{{ function('get_footer') }}
